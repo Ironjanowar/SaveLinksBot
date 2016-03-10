@@ -30,13 +30,14 @@ def refresh_links(user):
   i = 1
   for majorkey, linkdict in links.items():
     if str(majorkey) == str(user):
+      if not bool(links[str(user)]):
+          return "Not saved links mate!"
       for key in linkdict:
         link_list += str(i) + " - #" + linkdict[key] + "  ->  "
         link_list += key + "\n"
         i = i + 1
       return link_list
-    else:
-      return "Not saved links mate!"
+  return "Not saved links mate!"
 
 
 def save_link(user, link, tag):

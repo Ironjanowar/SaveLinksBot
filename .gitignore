@@ -1,6 +1,9 @@
 # TOKEN #
 *.token
 
+# Bot stuff #
+links.json
+
 # Emacs stuff #
 \#*\#
 *~
