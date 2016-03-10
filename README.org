@@ -1,0 +1,33 @@
+Esto es un bot programado en Python gracias a esta [[https://github.com/eternnoir/pyTelegramBotAPI/tree/02c22c990b1affe9d43d8920f6b53fa10c38a82e][API]] que nos ofrece [[https://github.com/eternnoir][@eternnoir]].
+
+*NOTA:* El bot todavia se esta desarrollando 
+
+* Instalación y Uso
+- Instalar las [[https://github.com/eternnoir/pyTelegramBotAPI#getting-started][dependencias]] de la API.
+#+BEGIN_SRC bash
+  $ pip install pyTelegramBotAPI
+#+END_SRC
+
+- Clonar el repositorio y acceder a él.
+#+BEGIN_SRC bash
+   $ git clone https://github.com/Ironjanowar/SaveLinksBot.git
+   $ cd SaveLinksBot
+#+END_SRC
+
+- Crear un archivo llamado *links.token* con el token en el interior.
+#+BEGIN_SRC bash
+  $ echo "TOKEN" > links.token
+#+END_SRC
+
+*NOTA:* Para obtener tu propio /token/ haz el punto 3 de esta [[https://core.telegram.org/bots][guía]].
+
+- Iniciar el bot.
+#+BEGIN_SRC bash
+  $ ./run.sh
+#+END_SRC
+
+* Comandos
+- /start :: Comienza el bot y guarda al usuario
+- /login :: En caso de no haber hecho */start*, este comando guadará al usuario
+- /save [link] :: Guarda el link que pongas
+- /list :: Lista los links guardados
