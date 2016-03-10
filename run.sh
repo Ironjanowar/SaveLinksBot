@@ -1,3 +1,6 @@
 #! /bin/bash
 
-python bot.py
+while true;do
+    python bot.py
+    sleep 1
+done
