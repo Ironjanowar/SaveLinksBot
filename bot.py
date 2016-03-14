@@ -23,6 +23,21 @@ def listener(messages):
       else:
         print ("Group -> " + str(m.chat.title) + " [" + str(m.chat.id) + "]: " + m.text)
 
+def isUserAnswer(user, userTracking):
+  if user in userTracking.keys():
+    return True
+  else:
+    return False
+
+def saveUser(user):
+  with open('./data/links.json', 'r') as links_json:
+    links = json.load(links_json)
+  if not str(user) in links.keys():
+    links[str(user)] = {}
+    with open('./data/links.json', 'w') as jsave:
+      json.dump(links, jsave)
+
+
 def refresh_links(user):
   links = json.load(open('./data/links.json'))
   link_list  = "Links saved:\n\n"
@@ -39,6 +54,19 @@ def refresh_links(user):
       return link_list
   return "Not saved links mate!"
 
+def remove_links(user):
+  links = json.load(open('./data/links.json'))
+
+  i = 1
+  for majorkey, linkdict in links.items():
+    if str(majorkey) == str(user):
+      if not bool(links[str(user)]):
+        return "Not saved links mate!"
+      links[str(user)] = {}
+      with open('./data/links.json', 'w') as jsave:
+        json.dump(links, jsave)
+      return "All links removed!"
+    i = i + 1
 
 def save_link(user, link, tag):
   with open('./data/links.json', 'r') as links_json:
@@ -57,7 +85,6 @@ bot.skip_pending = True
 print("Running...")
 
 # Handlers
-
 @bot.message_handler(commands=['start'])
 def send_start(message):
   with open('./data/links.json', 'r') as links_json:
@@ -73,11 +100,32 @@ def send_links(message):
   links = refresh_links(message.chat.id)
   bot.send_message(message.chat.id, links)
 
+userTracking = {}
 @bot.message_handler(commands=['save'])
 def send_save_link(message):
-  link = message.text.split(' ',1)[1]
-  save_link(message.chat.id, link, "notag")
+  saveUser(message.chat.id)
+  if message.text == '/save' or message.text == '/save@saveLinks_bot':
+    bot.send_message(message.chat.id, "What link de you want to store?")
+    userTracking[message.from_user.id] = message.chat.first_name
+  else:
+    url = message.text.split(' ')[1]
+    tag = message.text.split(' ')[2]
+    save_link(message.chat.id, url, tag)
+    bot.reply_to(message, "Link saved!")
+
+@bot.message_handler(func=lambda message: isUserAnswer(message.from_user.id, userTracking))
+def catch_save_link(message):
+  url = message.text.split(' ')[0]
+  tag = message.text.split(' ')[1]
+  save_link(message.chat.id, url, tag)
   bot.reply_to(message, "Link saved!")
+
+@bot.message_handler(commands=['removeall'])
+def send_remove_links(message):
+  cid = message.chat.id
+  saveUser(cid)
+  removeMessage = remove_links(cid)
+  bot.reply_to(message, removeMessage)
 
 # Start the bot
 bot.polling()
