@@ -1,6 +1,7 @@
 import telebot
 import json
 
+
 # Create bot with its token
 with open("./links.token", "r") as TOKEN:
   bot = telebot.TeleBot(TOKEN.readline().strip())
