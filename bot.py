@@ -10,8 +10,6 @@ with open('./data/data.json', 'r') as j:
   data = json.load(j)
   start_message = data['start']
 
-
-
 # Functions used
 def listener(messages):
   # When new messages arrive TeleBot will call this function.
@@ -23,11 +21,13 @@ def listener(messages):
       else:
         print ("Group -> " + str(m.chat.title) + " [" + str(m.chat.id) + "]: " + m.text)
 
+
 def isUserAnswer(user, userTracking):
   if user in userTracking.keys():
     return True
   else:
     return False
+
 
 def saveUser(user):
   with open('./data/links.json', 'r') as links_json:
@@ -87,12 +87,6 @@ print("Running...")
 # Handlers
 @bot.message_handler(commands=['start'])
 def send_start(message):
-  with open('./data/links.json', 'r') as links_json:
-    links = json.load(links_json)
-
-  links[message.chat.id] = {}
-  with open('./data/links.json', 'w') as jsave:
-    json.dump(links, jsave)
   bot.reply_to(message, start_message)
 
 @bot.message_handler(commands=['list'])
