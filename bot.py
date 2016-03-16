@@ -103,8 +103,12 @@ def send_save_link(message):
     bot.send_message(message.chat.id, "What link de you want to store?")
     userTracking[message.from_user.id] = message.chat.first_name
   else:
-    url = message.text.split(' ')[1]
-    tag = message.text.split(' ')[2]
+    if len(message.text.split(' ')) == 2:
+      url = message.text.split(' ')[1]
+      tag = ''
+    else:
+      url = message.text.split(' ')[1]
+      tag = message.text.split(' ')[2]
     save_link(message.chat.id, url, tag)
     bot.reply_to(message, "Link saved!")
 
