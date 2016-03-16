@@ -47,13 +47,13 @@ def refresh_links(user):
   for majorkey, linkdict in links.items():
     if str(majorkey) == str(user):
       if not bool(links[str(user)]):
-          return "Not saved links mate!"
+          return "Not saved links!"
       for key in linkdict:
         link_list += str(i) + " - #" + linkdict[key] + "  ->  "
         link_list += key + "\n"
         i = i + 1
       return link_list
-  return "Not saved links mate!"
+  return "Not saved links!"
 
 def remove_links(user):
   links = json.load(open('./data/links.json'))
@@ -62,7 +62,7 @@ def remove_links(user):
   for majorkey, linkdict in links.items():
     if str(majorkey) == str(user):
       if not bool(links[str(user)]):
-        return "Not saved links mate!"
+        return "Not saved links!"
       links[str(user)] = {}
       with open('./data/links.json', 'w') as jsave:
         json.dump(links, jsave)
@@ -114,9 +114,14 @@ def send_save_link(message):
 
 @bot.message_handler(func=lambda message: isUserAnswer(message.from_user.id, userTracking))
 def catch_save_link(message):
-  url = message.text.split(' ')[0]
-  tag = message.text.split(' ')[1]
+  if len(message.text.split(' ')) == 1:
+    url = message.text.split(' ')[0]
+    tag = ''
+  else:
+    url = message.text.split(' ')[0]
+    tag = message.text.split(' ')[1]
   save_link(message.chat.id, url, tag)
+  del userTracking[message.chat.id]
   bot.reply_to(message, "Link saved!")
 
 @bot.message_handler(commands=['removeall'])
