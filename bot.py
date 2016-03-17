@@ -1,10 +1,16 @@
 import telebot
 import json
-
+import os.path as path
 
 # Create bot with its token
 with open("./links.token", "r") as TOKEN:
     bot = telebot.TeleBot(TOKEN.readline().strip())
+
+# Check if everything is all right
+if not path.isfile('./data/links.json'):
+    with open('./data/links.json', 'w') as linksFile:
+        linksFile.write('{}')
+        linksFile.close()
 
 # Files used
 with open('./data/data.json', 'r') as j:
@@ -20,11 +26,11 @@ def listener(messages):
         if m.content_type == 'text':
             # Prints the sent message to the console
             if m.chat.type == 'private':
-                print ("Chat -> " + str(m.chat.first_name) +
-                       " [" + str(m.chat.id) + "]: " + m.text)
+                print("Chat -> " + str(m.chat.first_name) +
+                      " [" + str(m.chat.id) + "]: " + m.text)
             else:
-                print ("Group -> " + str(m.chat.title) +
-                       " [" + str(m.chat.id) + "]: " + m.text)
+                print("Group -> " + str(m.chat.title) +
+                      " [" + str(m.chat.id) + "]: " + m.text)
 
 
 def isUserAnswer(user, userTracking):
