@@ -17,7 +17,18 @@ with open('./data/data.json', 'r') as j:
     data = json.load(j)
     start_message = data['start']
 
+with open('./data/admins.json', 'r') as adminData:
+    admins = json.load(adminData)
+
 # Functions used
+
+
+def isAdmin_fromPrivate(message):
+    if message.chat.type == 'private':
+        userID = message.from_user.id
+        if str(userID) in admins:
+            return True
+        return False
 
 
 def listener(messages):
@@ -129,8 +140,8 @@ def send_save_link(message):
         else:
             url = message.text.split(' ')[1]
             tag = message.text.split(' ')[2]
-        save_link(message.chat.id, url, tag)
-        bot.reply_to(message, "Link saved!")
+            save_link(message.chat.id, url, tag)
+            bot.reply_to(message, "Link saved!")
 
 
 @bot.message_handler(commands=['tag'])
@@ -156,9 +167,9 @@ def catch_save_link(message):
     else:
         url = message.text.split(' ')[0]
         tag = message.text.split(' ')[1]
-    save_link(message.chat.id, url, tag)
-    del userTracking[message.chat.id]
-    bot.reply_to(message, "Link saved!")
+        save_link(message.chat.id, url, tag)
+        del userTracking[message.chat.id]
+        bot.reply_to(message, "Link saved!")
 
 
 @bot.message_handler(commands=['removeall'])
@@ -167,6 +178,18 @@ def send_remove_links(message):
     saveUser(cid)
     removeMessage = remove_links(cid)
     bot.reply_to(message, removeMessage)
+
+# Root commands
+
+
+@bot.message_handler(commands=['update'])
+def auto_update(message):
+    if isAdmin_fromPrivate(message):
+        bot.reply_to(message, "Reiniciando..\n\nPrueba algun comando en 10 segundos")
+        print("Updating..")
+        sys.exit()
+    else:
+        bot.reply_to(message, "Este comando es solo para admins y debe ser enviado por privado")
 
 # Start the bot
 bot.polling()
