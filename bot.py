@@ -73,8 +73,6 @@ def refresh_links(user):
                 value = linkdict[key]
                 value = "#{}".format(value) if not value.startswith("#") and value != "" else value
                 link_list += "{}. {} -> {}\n".format(i, value, key)
-                # link_list += str(i) + " - #" + linkdict[key] + "  ->  "
-                # link_list += key + "\n"
                 i = i + 1
             return link_list
     return "Not saved links!"
@@ -159,7 +157,9 @@ def send_save_tag_link(message):
     bot.reply_to(message, "Link saved!")
 
 
-@bot.message_handler(func=lambda message: isUserAnswer(message.from_user.id, userTracking))
+@bot.message_handler(func=lambda message:
+                     isUserAnswer(message.from_user.id,
+                                  userTracking))
 def catch_save_link(message):
     if len(message.text.split(' ')) == 1:
         url = message.text.split(' ')[0]
@@ -185,7 +185,8 @@ def send_remove_links(message):
 @bot.message_handler(commands=['update'])
 def auto_update(message):
     if isAdmin_fromPrivate(message):
-        bot.reply_to(message, "Reiniciando..\n\nPrueba algun comando en 10 segundos")
+        bot.reply_to(message,
+                     "Reiniciando..")
         print("Updating..")
         exit()
     else:
