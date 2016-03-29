@@ -60,8 +60,8 @@ def refresh_links(user):
                 return "Not saved links!"
             for key in linkdict:
                 value = linkdict[key]
-                value = "#{}".format(value) if not value.startswith("#") else value
-                link_list += "{} - {} -> {}\n".format(i, value, key)
+                value = "#{}".format(value) if not value.startswith("#") and value != "" else value
+                link_list += "{}. {} -> {}\n".format(i, value, key)
                 # link_list += str(i) + " - #" + linkdict[key] + "  ->  "
                 # link_list += key + "\n"
                 i = i + 1
