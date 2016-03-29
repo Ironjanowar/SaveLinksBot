@@ -187,7 +187,7 @@ def auto_update(message):
     if isAdmin_fromPrivate(message):
         bot.reply_to(message, "Reiniciando..\n\nPrueba algun comando en 10 segundos")
         print("Updating..")
-        sys.exit()
+        exit()
     else:
         bot.reply_to(message, "Este comando es solo para admins y debe ser enviado por privado")
 
